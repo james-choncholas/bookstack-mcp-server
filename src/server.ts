@@ -160,11 +160,27 @@ export class BookStackMCPServer {
   private setupHandlers(): void {
     // List tools handler
     this.server.setRequestHandler(ListToolsRequestSchema, async () => {
-      const tools = Array.from(this.tools.values()).map(tool => ({
-        name: tool.name,
-        description: tool.description,
-        inputSchema: tool.inputSchema,
-      }));
+      const tools = Array.from(this.tools.values()).map(tool => {
+        let enhancedDescription = tool.description;
+
+        // Append usage patterns
+        if (tool.usage_patterns && tool.usage_patterns.length > 0) {
+          enhancedDescription += '\n\nUsage Patterns:\n' + tool.usage_patterns.map(p => `- ${p}`).join('\n');
+        }
+
+        // Append examples
+        if (tool.examples && tool.examples.length > 0) {
+          enhancedDescription += '\n\nExamples:\n' + tool.examples.map(e => 
+            `- ${e.description}\n  Input: ${JSON.stringify(e.input)}`
+          ).join('\n');
+        }
+
+        return {
+          name: tool.name,
+          description: enhancedDescription,
+          inputSchema: tool.inputSchema,
+        };
+      });
 
       this.logger.debug(`Listed ${tools.length} tools`);
       return { tools };
