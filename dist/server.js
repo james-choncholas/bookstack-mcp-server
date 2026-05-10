@@ -105,10 +105,24 @@ class BookStackMCPServer {
             new system_1.SystemTools(this.client, this.validator, this.logger),
             new server_info_1.ServerInfoTools(this.logger, this.tools, this.resources),
         ];
+        const config = manager_1.ConfigManager.getInstance().getConfig();
+        const { include, exclude } = config.tools;
         // Register all tools
         toolClasses.forEach((toolClass) => {
             toolClass.getTools().forEach((tool) => {
-                this.tools.set(tool.name, tool);
+                let shouldRegister = true;
+                if (include.length > 0) {
+                    shouldRegister = include.some((pattern) => tool.name === pattern || tool.name.startsWith(`${pattern}_`) || (tool.category && tool.category === pattern));
+                }
+                if (shouldRegister && exclude.length > 0) {
+                    const isExcluded = exclude.some((pattern) => tool.name === pattern || tool.name.startsWith(`${pattern}_`) || (tool.category && tool.category === pattern));
+                    if (isExcluded) {
+                        shouldRegister = false;
+                    }
+                }
+                if (shouldRegister) {
+                    this.tools.set(tool.name, tool);
+                }
             });
         });
         this.logger.info(`Registered ${this.tools.size} tools`);

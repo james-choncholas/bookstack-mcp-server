@@ -59,6 +59,16 @@ export declare const ConfigSchema: z.ZodObject<{
         format?: "pretty" | "json" | undefined;
         level?: "info" | "error" | "warn" | "debug" | undefined;
     }>;
+    tools: z.ZodObject<{
+        include: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
+        exclude: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
+    }, "strip", z.ZodTypeAny, {
+        include: string[];
+        exclude: string[];
+    }, {
+        include?: string[] | undefined;
+        exclude?: string[] | undefined;
+    }>;
     context7: z.ZodObject<{
         enabled: z.ZodDefault<z.ZodBoolean>;
         libraryId: z.ZodDefault<z.ZodString>;
@@ -118,6 +128,10 @@ export declare const ConfigSchema: z.ZodObject<{
         format: "pretty" | "json";
         level: "info" | "error" | "warn" | "debug";
     };
+    tools: {
+        include: string[];
+        exclude: string[];
+    };
     context7: {
         enabled: boolean;
         libraryId: string;
@@ -154,6 +168,10 @@ export declare const ConfigSchema: z.ZodObject<{
     logging: {
         format?: "pretty" | "json" | undefined;
         level?: "info" | "error" | "warn" | "debug" | undefined;
+    };
+    tools: {
+        include?: string[] | undefined;
+        exclude?: string[] | undefined;
     };
     context7: {
         enabled?: boolean | undefined;

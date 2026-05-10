@@ -32,6 +32,10 @@ exports.ConfigSchema = zod_1.z.object({
         level: zod_1.z.enum(['error', 'warn', 'info', 'debug']).default('info'),
         format: zod_1.z.enum(['json', 'pretty']).default('pretty'),
     }),
+    tools: zod_1.z.object({
+        include: zod_1.z.array(zod_1.z.string()).default([]),
+        exclude: zod_1.z.array(zod_1.z.string()).default([]),
+    }),
     context7: zod_1.z.object({
         enabled: zod_1.z.boolean().default(true),
         libraryId: zod_1.z.string().default('/bookstack/bookstack'),
@@ -87,6 +91,10 @@ class ConfigManager {
             logging: {
                 level: process.env.LOG_LEVEL || 'info',
                 format: process.env.LOG_FORMAT || 'pretty',
+            },
+            tools: {
+                include: process.env.TOOLS_INCLUDE ? process.env.TOOLS_INCLUDE.split(',').map(s => s.trim()).filter(Boolean) : [],
+                exclude: process.env.TOOLS_EXCLUDE ? process.env.TOOLS_EXCLUDE.split(',').map(s => s.trim()).filter(Boolean) : [],
             },
             context7: {
                 enabled: process.env.CONTEXT7_ENABLED !== 'false',
@@ -169,6 +177,7 @@ class ConfigManager {
             rateLimit: config.rateLimit,
             validation: config.validation,
             logging: config.logging,
+            tools: config.tools,
             context7: {
                 enabled: config.context7.enabled,
                 libraryId: config.context7.libraryId,
