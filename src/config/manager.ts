@@ -31,6 +31,10 @@ export const ConfigSchema = z.object({
     level: z.enum(['error', 'warn', 'info', 'debug']).default('info'),
     format: z.enum(['json', 'pretty']).default('pretty'),
   }),
+  tools: z.object({
+    include: z.array(z.string()).default([]),
+    exclude: z.array(z.string()).default([]),
+  }),
   context7: z.object({
     enabled: z.boolean().default(true),
     libraryId: z.string().default('/bookstack/bookstack'),
@@ -95,6 +99,10 @@ export class ConfigManager {
       logging: {
         level: process.env.LOG_LEVEL || 'info',
         format: process.env.LOG_FORMAT || 'pretty',
+      },
+      tools: {
+        include: process.env.TOOLS_INCLUDE ? process.env.TOOLS_INCLUDE.split(',').map(s => s.trim()).filter(Boolean) : [],
+        exclude: process.env.TOOLS_EXCLUDE ? process.env.TOOLS_EXCLUDE.split(',').map(s => s.trim()).filter(Boolean) : [],
       },
       context7: {
         enabled: process.env.CONTEXT7_ENABLED !== 'false',
@@ -187,6 +195,7 @@ export class ConfigManager {
       rateLimit: config.rateLimit,
       validation: config.validation,
       logging: config.logging,
+      tools: config.tools,
       context7: {
         enabled: config.context7.enabled,
         libraryId: config.context7.libraryId,

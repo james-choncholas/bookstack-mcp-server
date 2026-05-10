@@ -12,6 +12,7 @@ This server supports two transport modes: **Streamable HTTP** and **Stdio**.
 - **Complete BookStack Integration** - Access all your books, pages, chapters, and content
 - **47+ MCP Tools** - Full CRUD operations for every BookStack feature
 - **Search & Export** - Find content and export in multiple formats
+- **Tool Filtering** - Configure which tools to expose via environment variables
 - **User Management** - Handle users, roles, and permissions
 - **Production Ready** - Rate limiting, validation, error handling, and logging
 

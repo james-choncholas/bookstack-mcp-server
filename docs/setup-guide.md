@@ -223,6 +223,16 @@ DEBUG=false
   - Options: `json`, `pretty`
   - Use `json` for production logs
 
+#### Tool Filtering (Optional)
+- **TOOLS_INCLUDE**: Comma-separated list of tool names or categories to expose.
+  - If set, only matching tools will be registered.
+  - Supports exact name match, category match, or name prefix.
+  - Example: `books,pages,bookstack_search`
+
+- **TOOLS_EXCLUDE**: Comma-separated list of tool names or categories to hide.
+  - Runs after the include filter.
+  - Example: `delete,users,bookstack_pages_export`
+
 #### Validation
 - **VALIDATION_ENABLED**: Enable input validation
   - Default: `true`
